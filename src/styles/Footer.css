@@ -1,0 +1,198 @@
+/* ==========================================================================
+   1. GLOBAL SURFACE ANCHORS & CSS CONSTANTS
+   ========================================================================== */
+:root {
+  /* UI Surface Colors */
+  --bg-footer: #04060a;
+  --bg-line-glow: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.15) 50%, transparent);
+  
+  /* Text Stack */
+  --text-main: #f8fafc;
+  --text-sub: #94a3b8;
+  --text-dim: #475569;
+  
+  /* Color Accents */
+  --neon-green: #10b981;
+  --logo-gradient: linear-gradient(135deg, #34d399 0%, #06b6d4 100%);
+  
+  /* Layout Engines */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --max-width: 1200px;
+  --transition-fast: color 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.global-footer {
+  width: 100%;
+  background-color: var(--bg-footer);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle top gradient edge instead of a harsh flat border */
+.global-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--bg-line-glow);
+}
+
+/* ==========================================================================
+   2. CONTENT COLUMN TRACKING STRUCTURE
+   ========================================================================== */
+.footer-container {
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+  padding: 5rem 2rem 4rem 2rem;
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 3rem;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Column Header Typography */
+.footer-column h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-main);
+}
+
+/* Structural Navigation Matrix Elements */
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-column li {
+  font-size: 0.95rem;
+  color: var(--text-sub);
+  line-height: 1.5;
+}
+
+/* Interactive Navigation Links */
+.footer-column a {
+  color: var(--text-sub);
+  text-decoration: none;
+  display: inline-block;
+  transition: var(--transition-fast);
+}
+
+.footer-column a:hover {
+  color: var(--neon-green);
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   3. BRAND PROFILE PROFILE BLOCK
+   ========================================================================== */
+.footer-column.brand h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.footer-column.brand h3 span {
+  background: var(--logo-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-column.brand p {
+  font-size: 0.95rem;
+  color: var(--text-sub);
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+/* ==========================================================================
+   4. SYSTEM METADATA BOTTOM BAR
+   ========================================================================== */
+.footer-bottom {
+  max-width: var(--max-width);
+  width: calc(100% - 4rem);
+  margin: 0 auto;
+  padding: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+/* Clean divider line separate from standard structural grid walls */
+.footer-bottom::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.footer-bottom p {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+/* Technical system hash tags */
+.footer-bottom p:last-child {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   5. RESPONSIVE BREAKPOINT PORTABLES
+   ========================================================================== */
+@media (max-width: 960px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem 2rem;
+    padding: 4rem 2rem 3rem 2rem;
+  }
+  
+  .footer-column.brand {
+    grid-column: span 2;
+  }
+  
+  .footer-column.brand p {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 540px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 4rem 1.5rem 2.5rem 1.5rem;
+  }
+  
+  .footer-column.brand {
+    grid-column: span 1;
+  }
+  
+  .footer-bottom {
+    width: calc(100% - 3rem);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1.75rem 0;
+  }
+}
