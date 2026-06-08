@@ -1,0 +1,247 @@
+/* =====================================================
+   ACADEMY OS NAVBAR FULL STYLE
+===================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================
+   ROOT THEMES
+========================= */
+:root {
+  --primary: #2563eb;
+  --secondary: #38bdf8;
+  --dark: #0f172a;
+  --light: #ffffff;
+}
+
+/* =========================
+   GLOBAL NAVBAR
+========================= */
+.global-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 75px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 30px;
+
+  background: linear-gradient(135deg, #0a2fd8, #02124d);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+  z-index: 9999;
+}
+
+/* =========================
+   LEFT SIDE
+========================= */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-link {
+  text-decoration: none;
+  color: white;
+
+  font-size: 1.3rem;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* =========================
+   BURGER MENU
+========================= */
+.burger-trigger-btn {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  cursor: pointer;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+
+  font-size: 20px;
+  transition: 0.3s;
+}
+
+.burger-trigger-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* =========================
+   CENTER NAV LINKS
+========================= */
+.nav-center {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-center a {
+  text-decoration: none;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  padding: 8px 14px;
+  border-radius: 10px;
+
+  transition: 0.3s;
+  position: relative;
+}
+
+.nav-center a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #38bdf8;
+}
+
+/* underline animation */
+.nav-center a::after {
+  content: "";
+  position: absolute;
+
+  left: 0;
+  bottom: -6px;
+
+  width: 0%;
+  height: 2px;
+
+  background: #38bdf8;
+
+  transition: 0.3s;
+}
+
+.nav-center a:hover::after {
+  width: 100%;
+}
+
+/* =========================
+   RIGHT SIDE
+========================= */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* theme button */
+.theme-toggle-action-btn {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  cursor: pointer;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.theme-toggle-action-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* avatar */
+.avatar-circle {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  color: white;
+
+  background: linear-gradient(135deg, #38bdf8, #2563eb);
+}
+
+/* buttons */
+.sign-in-btn {
+  border: none;
+  cursor: pointer;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  color: white;
+  font-weight: 600;
+
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
+
+  transition: 0.3s;
+}
+
+.sign-in-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   DRAWER OVERLAY
+========================= */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  z-index: 999;
+}
+
+/* =========================
+   SIDE DRAWER MENU
+========================= */
+
+
+/* =========================
+   DARK / LIGHT SUPPORT
+========================= */
+.theme-light .global-navbar {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.theme-light .nav-center a,
+.theme-light .logo-link,
+.theme-light .burger-trigger-btn,
+.theme-light .theme-toggle-action-btn {
+  color: #0f172a;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
+  .nav-center {
+    display: none;
+  }
+
+  .global-navbar {
+    padding: 0 15px;
+  }
+}

@@ -1,0 +1,26 @@
+:root {
+  /* Design Tokens */
+  --radius: 12px;
+  --border-width: 1px;
+  --transition: all 0.2s ease;
+
+  /* Dark Theme */
+  --bg-main: #0f172a;
+  --bg-sidebar: #111827;
+  --bg-card: #1e293b;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --accent: #38bdf8;
+  --border: #334155;
+}
+
+.theme-light {
+  --bg-main: #f8fafc;
+  --bg-sidebar: #ffffff;
+  --bg-card: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --accent: #2563eb;
+  --border: #e2e8f0;
+}
+
