@@ -1,32 +1,37 @@
+// =====================
+// IMPORTS (ONLY ONCE)
+// =====================
 const express = require("express");
 const cors = require("cors");
 const db = require("./config/db");
 const jwt = require("jsonwebtoken");
 
+// =====================
+// APP INIT
+// =====================
 const app = express();
 const PORT = 8080;
-
 const JWT_SECRET = "school_secret";
 
+// =====================
+// MIDDLEWARE
+// =====================
 app.use(cors());
 app.use(express.json());
 
-/* ======================================================
-   TEST
-====================================================== */
+// =====================
+// TEST ROUTE
+// =====================
 app.get("/", (req, res) => {
   res.send("🚀 School System API Running...");
 });
 
-/* ======================================================
-   AUTH - REGISTER
-====================================================== */
+
+// ======================================================
+// AUTH - REGISTER
+// ======================================================
 app.post("/api/register", (req, res) => {
   const { fullName, email, role, password } = req.body;
-
-  if (!fullName || !email || !role || !password) {
-    return res.status(400).json({ message: "All fields required" });
-  }
 
   const sql =
     "INSERT INTO Users (fullName, email, role, password) VALUES (?, ?, ?, ?)";
@@ -38,9 +43,10 @@ app.post("/api/register", (req, res) => {
   });
 });
 
-/* ======================================================
-   AUTH - LOGIN (EMAIL BASED)
-====================================================== */
+
+// ======================================================
+// AUTH - LOGIN
+// ======================================================
 app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -62,7 +68,7 @@ app.post("/api/login", (req, res) => {
         role: user.role,
       },
       JWT_SECRET,
-      { expiresIn: "1h" },
+      { expiresIn: "1h" }
     );
 
     res.json({
@@ -73,64 +79,86 @@ app.post("/api/login", (req, res) => {
   });
 });
 
-/* ======================================================
-   MIDDLEWARE (JWT PROTECT - OPTIONAL)
-====================================================== */
-function verifyToken(req, res, next) {
-  const token = req.headers["authorization"];
 
-  if (!token) {
-    return res.status(403).json({ message: "No token provided" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
-  }
-}
-
-/* ======================================================
-   STUDENTS (CRUD)
-====================================================== */
+// ======================================================
+// STUDENTS CRUD
+// ======================================================
 app.get("/api/students", (req, res) => {
-  db.query(
-    `SELECT student_id, first_name, last_name, email, phone,
-     DATE(enrollment_date) AS enrollment_date, status
-     FROM Students`,
-    (err, result) => {
-      if (err) return res.status(500).json({ error: err.sqlMessage });
-      res.json(result);
-    },
-  );
+  db.query("SELECT * FROM Students", (err, result) => {
+    if (err) return res.status(500).json({ error: err.sqlMessage });
+    res.json(result);
+  });
 });
 
 app.post("/api/students", (req, res) => {
+  const {
+    student_id,
+    first_name,
+    last_name,
+    email,
+    phone,
+    enrollment_date,
+    status,
+  } = req.body;
+
   const sql = `
-    INSERT INTO Students 
+    INSERT INTO Students
     (student_id, first_name, last_name, email, phone, enrollment_date, status)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
 
-  db.query(sql, Object.values(req.body), (err) => {
-    if (err) return res.status(500).json({ error: err.sqlMessage });
-    res.json({ message: "Student added" });
-  });
+  db.query(
+    sql,
+    [
+      student_id,
+      first_name,
+      last_name,
+      email,
+      phone,
+      enrollment_date,
+      status,
+    ],
+    (err) => {
+      if (err) return res.status(500).json({ error: err.sqlMessage });
+
+      res.json({ message: "Student added successfully" });
+    }
+  );
 });
 
 app.put("/api/students/:id", (req, res) => {
+  const {
+    first_name,
+    last_name,
+    email,
+    phone,
+    enrollment_date,
+    status,
+  } = req.body;
+
   const sql = `
     UPDATE Students SET
     first_name=?, last_name=?, email=?, phone=?, enrollment_date=?, status=?
     WHERE student_id=?
   `;
 
-  db.query(sql, [...Object.values(req.body), req.params.id], (err) => {
-    if (err) return res.status(500).json({ error: err.sqlMessage });
-    res.json({ message: "Student updated" });
-  });
+  db.query(
+    sql,
+    [
+      first_name,
+      last_name,
+      email,
+      phone,
+      enrollment_date,
+      status,
+      req.params.id,
+    ],
+    (err) => {
+      if (err) return res.status(500).json({ error: err.sqlMessage });
+
+      res.json({ message: "Student updated successfully" });
+    }
+  );
 });
 
 app.delete("/api/students/:id", (req, res) => {
@@ -139,14 +167,16 @@ app.delete("/api/students/:id", (req, res) => {
     [req.params.id],
     (err) => {
       if (err) return res.status(500).json({ error: err.sqlMessage });
-      res.json({ message: "Student deleted" });
-    },
+
+      res.json({ message: "Student deleted successfully" });
+    }
   );
 });
 
-/* ======================================================
-   TEACHERS (CRUD)
-====================================================== */
+
+// ======================================================
+// TEACHERS CRUD
+// ======================================================
 app.get("/api/teachers", (req, res) => {
   db.query("SELECT * FROM Teachers", (err, result) => {
     if (err) return res.status(500).json({ error: err.sqlMessage });
@@ -155,29 +185,74 @@ app.get("/api/teachers", (req, res) => {
 });
 
 app.post("/api/teachers", (req, res) => {
+  const {
+    teacher_id,
+    first_name,
+    last_name,
+    email,
+    phone,
+    hire_date,
+    department_id,
+  } = req.body;
+
   const sql = `
     INSERT INTO Teachers
     (teacher_id, first_name, last_name, email, phone, hire_date, department_id)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
 
-  db.query(sql, Object.values(req.body), (err) => {
-    if (err) return res.status(500).json({ error: err.sqlMessage });
-    res.json({ message: "Teacher added" });
-  });
+  db.query(
+    sql,
+    [
+      teacher_id,
+      first_name,
+      last_name,
+      email,
+      phone,
+      hire_date,
+      department_id,
+    ],
+    (err) => {
+      if (err) return res.status(500).json({ error: err.sqlMessage });
+
+      res.json({ message: "Teacher added successfully" });
+    }
+  );
 });
 
 app.put("/api/teachers/:id", (req, res) => {
+  const {
+    first_name,
+    last_name,
+    email,
+    phone,
+    hire_date,
+    department_id,
+  } = req.body;
+
   const sql = `
     UPDATE Teachers SET
     first_name=?, last_name=?, email=?, phone=?, hire_date=?, department_id=?
     WHERE teacher_id=?
   `;
 
-  db.query(sql, [...Object.values(req.body), req.params.id], (err) => {
-    if (err) return res.status(500).json({ error: err.sqlMessage });
-    res.json({ message: "Teacher updated" });
-  });
+  db.query(
+    sql,
+    [
+      first_name,
+      last_name,
+      email,
+      phone,
+      hire_date,
+      department_id,
+      req.params.id,
+    ],
+    (err) => {
+      if (err) return res.status(500).json({ error: err.sqlMessage });
+
+      res.json({ message: "Teacher updated successfully" });
+    }
+  );
 });
 
 app.delete("/api/teachers/:id", (req, res) => {
@@ -186,14 +261,16 @@ app.delete("/api/teachers/:id", (req, res) => {
     [req.params.id],
     (err) => {
       if (err) return res.status(500).json({ error: err.sqlMessage });
-      res.json({ message: "Teacher deleted" });
-    },
+
+      res.json({ message: "Teacher deleted successfully" });
+    }
   );
 });
 
-/* ======================================================
-   COURSES
-====================================================== */
+
+// ======================================================
+// COURSES
+// ======================================================
 app.get("/api/courses", (req, res) => {
   db.query("SELECT * FROM Courses", (err, result) => {
     if (err) return res.status(500).json({ error: err.sqlMessage });
@@ -201,9 +278,10 @@ app.get("/api/courses", (req, res) => {
   });
 });
 
-/* ======================================================
-   DEPARTMENTS
-====================================================== */
+
+// ======================================================
+// DEPARTMENTS
+// ======================================================
 app.get("/api/departments", (req, res) => {
   db.query("SELECT * FROM Departments", (err, result) => {
     if (err) return res.status(500).json({ error: err.sqlMessage });
@@ -211,9 +289,10 @@ app.get("/api/departments", (req, res) => {
   });
 });
 
-/* ======================================================
-   START SERVER
-====================================================== */
+
+// ======================================================
+// START SERVER
+// ======================================================
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

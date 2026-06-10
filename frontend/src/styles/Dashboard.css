@@ -173,6 +173,7 @@ aside {
   padding: 30px !important;
   display: flex !important;
   flex-direction: column !important;
+  margin-top: 75px;
   gap: 24px !important;
   width: 100% !important;
   max-width: 100% !important;

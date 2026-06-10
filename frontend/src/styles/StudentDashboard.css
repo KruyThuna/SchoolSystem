@@ -53,7 +53,7 @@
 ========================= */
 .sd-body {
   display: flex;
-  margin-top: 75px;
+  padding: 20, 20,0 ,20px;
   flex: 1;
   min-height: 0;
 }
