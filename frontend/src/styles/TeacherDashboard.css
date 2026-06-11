@@ -7,6 +7,11 @@
   box-sizing: border-box;
 }
 
+:root {
+  --navbar-height: 52px;
+  --sidebar-width: 220px;
+}
+
 /* =========================
    CONTAINER
 ========================= */
@@ -24,11 +29,12 @@
 .td-navbar {
   display: none;
   background: linear-gradient(90deg, #1e3a8a, #1d4ed8);
-  height: 52px;
+  height: var(--navbar-height);
   align-items: center;
   padding: 0 16px;
   gap: 12px;
   position: sticky;
+  
   top: 0;
   z-index: 30;
 }
@@ -52,10 +58,12 @@
    BODY
 ========================= */
 .td-body {
-  margin-top: 75px;
   display: flex;
+   margin-top: 45px;
+  
   flex: 1;
   min-height: 0;
+ 
 }
 
 /* =========================
@@ -64,21 +72,29 @@
 .td-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 15;
 }
 
 /* =========================
    SIDEBAR
 ========================= */
 .td-sidebar {
-  width: 220px;
-  min-width: 220px;
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
   background: #111827;
   padding: 16px 10px;
   display: flex;
   flex-direction: column;
   gap: 4px;
+   margin-top: 75px;
+
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  height: calc(100vh - var(--navbar-height));
+
+  transition: transform 0.25s ease;
 }
 
 .td-sidebar-title {
@@ -102,7 +118,7 @@
   align-items: center;
   gap: 10px;
   width: 100%;
-  transition: background 0.2s, color 0.2s;
+  transition: 0.2s;
 }
 
 .td-sidebar-btn:hover {
@@ -120,8 +136,9 @@
 ========================= */
 .td-main {
   flex: 1;
-  min-width: 0;        /* ✅ prevents overflow */
-  padding: 24px;
+  margin-left: var(--sidebar-width);
+  min-width: 0;
+  padding: 65px;
   overflow-y: auto;
 }
 
@@ -132,7 +149,7 @@
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  padding: 24px;
+  padding: 75px;
   width: 100%;
 }
 
@@ -180,6 +197,7 @@
   gap: 12px;
   font-size: 14px;
   color: #334155;
+  align-items: center;
 }
 
 .td-label {
@@ -193,7 +211,7 @@
 ========================= */
 .td-table-wrapper {
   width: 100%;
-  overflow-x: auto;    /* ✅ scroll on small screens */
+  overflow-x: auto;
 }
 
 .td-table {
@@ -207,7 +225,6 @@
   padding: 12px 16px;
   text-align: left;
   font-size: 13px;
-  font-weight: 600;
 }
 
 .td-table td {
@@ -215,10 +232,6 @@
   border-bottom: 1px solid #e5e7eb;
   font-size: 13px;
   color: #334155;
-}
-
-.td-table tr:last-child td {
-  border-bottom: none;
 }
 
 .td-table tr:hover td {
@@ -229,7 +242,6 @@
   text-align: center;
   color: #94a3b8;
   padding: 32px !important;
-  font-size: 13px;
 }
 
 /* =========================
@@ -240,7 +252,6 @@
   padding: 3px 10px;
   border-radius: 20px;
   font-size: 11px;
-  font-weight: 500;
 }
 
 .badge-green {
@@ -270,24 +281,20 @@
 ========================= */
 @media (max-width: 768px) {
   .td-navbar {
-    display: flex;      /* show hamburger on mobile */
+    display: flex;
   }
 
   .td-sidebar {
-    position: fixed;
-    left: -220px;
-    top: 52px;
-    height: calc(100vh - 52px);
+    transform: translateX(-100%);
     z-index: 20;
-    transition: left 0.25s ease;
-    min-width: unset;
   }
 
   .td-sidebar.open {
-    left: 0;
+    transform: translateX(0);
   }
 
   .td-main {
+    margin-left: 0;
     padding: 16px;
   }
 
@@ -299,6 +306,10 @@
 
   .td-info-row {
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
+  }
+
+  .td-label {
+    min-width: unset;
   }
 }

@@ -10,8 +10,10 @@ const jwt = require("jsonwebtoken");
 // APP INIT
 // =====================
 const app = express();
-const PORT = 8080;
-const JWT_SECRET = "school_secret";
+require("dotenv").config();
+
+const PORT = process.env.PORT || 8080;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // =====================
 // MIDDLEWARE
