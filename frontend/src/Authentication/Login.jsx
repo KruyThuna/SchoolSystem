@@ -44,8 +44,8 @@ export default function Auth() {
 
       const routes = {
         ADMIN: "/admin/schoolsystem",
-        STUDENT: "/admin/studentdash",
-        TEACHER: "/admin/teacherdash",
+        STUDENT: "/student/dashboard",
+        TEACHER: "/teacher/dashboard",
       };
 
       if (!routes[role]) {

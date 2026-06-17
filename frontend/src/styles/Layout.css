@@ -1,0 +1,17 @@
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* content grows between navbar and footer */
+.layout-body {
+  flex: 1;
+  padding: 20px;
+  background: #f5f6fa;
+}
+
+.layout-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
