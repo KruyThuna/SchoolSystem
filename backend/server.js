@@ -80,6 +80,11 @@ app.post("/api/login", (req, res) => {
     });
   });
 });
+// All User ===============================///
+
+const userRoutes = require("./routes/users");
+
+app.use("/users", userRoutes);
 
 
 // ======================================================

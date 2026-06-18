@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Sidebar from "../../components/Admin/Sidebar";
-
+import TbUsers from "./tb/tbUsers";
 import TbStudents from "./tb/tbStudents";
 import TbTeachers from "./tb/tbTeachers";
 import TbCourses from "./tb/tbCourses";
@@ -14,39 +14,36 @@ import TbSections from "./tb/tbSections";
 
 import "../../styles/Dashboard.css";
 
-/* =========================
-   PAGE MAP (CLEAN + SCALABLE)
-   ========================= */
 const pageMap = {
-  students: <TbStudents />,
-  teachers: <TbTeachers />,
-  courses: <TbCourses />,
-  departments: <TbDepartments />,
-  rooms: <TbClass />,
-  "academic-years": <TbAcademicYears />,
-  guardians: <TbGuardians />,
-  payments: <TbPayments />,
-  enrollments: <TbEnrollments />,
-  sections: <TbSections />
+  users: TbUsers,
+  students: TbStudents,
+  teachers: TbTeachers,
+  courses: TbCourses,
+  departments: TbDepartments,
+  rooms: TbClass,
+  "academic-years": TbAcademicYears,
+  guardians: TbGuardians,
+  payments: TbPayments,
+  enrollments: TbEnrollments,
+  sections: TbSections,
 };
 
 /* =========================
    MAIN COMPONENT
    ========================= */
 export default function SchoolSystem() {
-  const [active, setActive] = useState("students");
+  const [active, setActive] = useState("users");
+  // const [active, setActive] = useState("students");
+
+  const ActivePage = pageMap[active] || TbStudents;
 
   return (
     <div className="dashboard-container">
-
-      {/* Sidebar Navigation */}
       <Sidebar active={active} setActive={setActive} />
 
-      {/* Main Content Area */}
       <main className="main-content">
-        {pageMap[active] || <TbStudents />}
+        <ActivePage />
       </main>
-
     </div>
   );
 }

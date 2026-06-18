@@ -5,7 +5,9 @@ export default function Sidebar({ active, setActive }) {
   return (
     <div className="sidebar">
       <h2>School Admin</h2>
-
+       <button className={active === "users" ? "active" : ""} onClick={() => setActive("users")}>
+        Users
+      </button>
       <button className={active === "students" ? "active" : ""} onClick={() => setActive("students")}>
         Students
       </button>
