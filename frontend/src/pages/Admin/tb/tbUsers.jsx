@@ -25,7 +25,9 @@ export default function TbUsers() {
   const [loading, setLoading] = useState(true);
 
   const itemsPerPage = 5;
-  const API_URL = "http://localhost:5000/users";
+
+  // ✅ FIXED API URL
+const API_URL = "http://localhost:500/api/users";
 
   /* ================= FETCH USERS ================= */
   useEffect(() => {
@@ -51,8 +53,8 @@ export default function TbUsers() {
     try {
       await axios.delete(`${API_URL}/${id}`);
 
-      // instant UI update (no reload)
-      setUsers((prev) => prev.filter((u) => u.id !== id));
+      // ✅ FIXED FIELD (user_id)
+      setUsers((prev) => prev.filter((u) => u.user_id !== id));
     } catch (err) {
       console.log("Delete error:", err);
     }
@@ -62,20 +64,19 @@ export default function TbUsers() {
   const stats = useMemo(() => {
     return {
       total: users.length,
-      students: users.filter((u) => u.role === "Student").length,
-      teachers: users.filter((u) => u.role === "Teacher").length,
-      admins: users.filter((u) => u.role === "Administrator").length,
+      students: users.filter((u) => u.role === "student").length,
+      teachers: users.filter((u) => u.role === "teacher").length,
+      admins: users.filter((u) => u.role === "admin").length,
     };
   }, [users]);
 
   /* ================= FILTER USERS ================= */
   const filteredUsers = useMemo(() => {
     return users.filter((u) => {
-      const name = u?.name?.toLowerCase() || "";
+      const name = u?.fullName?.toLowerCase() || "";
       const email = u?.email?.toLowerCase() || "";
       const role = u?.role?.toLowerCase() || "";
       const status = u?.status?.toLowerCase() || "";
-
       const searchText = search.toLowerCase();
 
       const matchesSearch =
@@ -105,7 +106,6 @@ export default function TbUsers() {
     return filteredUsers.slice(start, start + itemsPerPage);
   }, [filteredUsers, currentPage]);
 
-  /* reset page when filter changes */
   useEffect(() => {
     setCurrentPage(1);
   }, [search, selectedRole, selectedStatus]);
@@ -128,35 +128,23 @@ export default function TbUsers() {
       {/* STATS */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-icon blue"><FaUsers /></div>
-          <div>
-            <div className="stat-value">{stats.total}</div>
-            <div className="stat-title">Total Users</div>
-          </div>
+          <FaUsers /> <div>{stats.total}</div>
+          <small>Total Users</small>
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon green"><FaGraduationCap /></div>
-          <div>
-            <div className="stat-value">{stats.students}</div>
-            <div className="stat-title">Students</div>
-          </div>
+          <FaGraduationCap /> <div>{stats.students}</div>
+          <small>Students</small>
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon purple"><FaUserTie /></div>
-          <div>
-            <div className="stat-value">{stats.teachers}</div>
-            <div className="stat-title">Teachers</div>
-          </div>
+          <FaUserTie /> <div>{stats.teachers}</div>
+          <small>Teachers</small>
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon orange"><FaShieldAlt /></div>
-          <div>
-            <div className="stat-value">{stats.admins}</div>
-            <div className="stat-title">Admins</div>
-          </div>
+          <FaShieldAlt /> <div>{stats.admins}</div>
+          <small>Admins</small>
         </div>
       </div>
 
@@ -178,9 +166,9 @@ export default function TbUsers() {
             onChange={(e) => setSelectedRole(e.target.value)}
           >
             <option>All Roles</option>
-            <option>Student</option>
-            <option>Teacher</option>
-            <option>Administrator</option>
+            <option>student</option>
+            <option>teacher</option>
+            <option>admin</option>
           </select>
 
           <select
@@ -188,8 +176,8 @@ export default function TbUsers() {
             onChange={(e) => setSelectedStatus(e.target.value)}
           >
             <option>All Status</option>
-            <option>Active</option>
-            <option>Inactive</option>
+            <option>active</option>
+            <option>inactive</option>
           </select>
 
           <button className="btn-export">
@@ -220,7 +208,8 @@ export default function TbUsers() {
               <tbody>
                 {paginatedUsers.length > 0 ? (
                   paginatedUsers.map((u, index) => (
-                    <tr key={u.id}>
+                    <tr key={u.user_id}>
+
                       <td>
                         {(currentPage - 1) * itemsPerPage + index + 1}
                       </td>
@@ -228,20 +217,15 @@ export default function TbUsers() {
                       <td>
                         <div className="user-info">
                           <img
-                            src={
-                              u.avatar ||
-                              "https://i.pravatar.cc/40"
-                            }
+                            src={u.avatar || "https://i.pravatar.cc/40"}
                             alt=""
                           />
-                          <span>{u.name}</span>
+                          <span>{u.fullName}</span>
                         </div>
                       </td>
 
                       <td>
-                        <span className="badge badge-blue">
-                          {u.role}
-                        </span>
+                        <span className="badge">{u.role}</span>
                       </td>
 
                       <td>{u.email}</td>
@@ -250,7 +234,7 @@ export default function TbUsers() {
                       <td>
                         <span
                           className={`badge ${
-                            u.status === "Active"
+                            u.status === "active"
                               ? "badge-green"
                               : "badge-red"
                           }`}
@@ -259,26 +243,20 @@ export default function TbUsers() {
                         </span>
                       </td>
 
-                      <td>{u.date}</td>
+                      <td>
+                        {new Date(u.created_at).toLocaleDateString()}
+                      </td>
 
                       <td>
                         <div className="actions">
-                          <div className="icon-btn view">
-                            <FaEye />
-                          </div>
-
-                          <div className="icon-btn edit">
-                            <FaPen />
-                          </div>
-
-                          <div
-                            className="icon-btn delete"
-                            onClick={() => handleDelete(u.id)}
-                          >
-                            <FaTrash />
-                          </div>
+                          <FaEye />
+                          <FaPen />
+                          <FaTrash
+                            onClick={() => handleDelete(u.user_id)}
+                          />
                         </div>
                       </td>
+
                     </tr>
                   ))
                 ) : (
@@ -295,6 +273,7 @@ export default function TbUsers() {
 
         {/* PAGINATION */}
         <div className="pagination">
+
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((p) => p - 1)}
@@ -318,7 +297,9 @@ export default function TbUsers() {
           >
             <FaChevronRight />
           </button>
+
         </div>
+
       </div>
     </div>
   );

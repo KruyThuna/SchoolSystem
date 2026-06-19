@@ -390,6 +390,7 @@ tr:hover td {
    HEADER
 ========================= */
 .dashboard-header {
+  margin-top: 75px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -425,6 +426,8 @@ tr:hover td {
    STATS CARDS
 ========================= */
 .stats-grid {
+  width: 65px;
+  height: 120px;
   display: grid;
   width: 85%;
   grid-template-columns: repeat(4, 1fr);
@@ -449,7 +452,7 @@ tr:hover td {
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  color: white;
+  color: rgb(20, 7, 7);
 }
 
 .stat-icon.blue {
@@ -466,15 +469,15 @@ tr:hover td {
 }
 
 .stat-value {
-  color: #0f172a;
-  font-size: 18px;
+  color: #01040a;
+  font-size: 25px;
   font-weight: bold;
 }
 
 .stat-title {
-  color: #0f172a;
+  color: #01040a;
   font-size: 12px;
-  color: var(--muted);
+
 }
 
 /* =========================
